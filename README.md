@@ -11,7 +11,7 @@ This controller enables automatic adjustments of FANs in SUPERMICRO servers base
 
 Tested on SUPERMICRO 4029GP TRT2 with RTX 2080 Ti (nvidia 415.27 drivers). 
 
-NOTE: Using on other systems requires manual calibration function that converts FANs RPM into %-based values (in SUPERMICRO_4029GP_TRT2_RPM_to_percent()` function in `supermicro.py`). Current this is hardcoded for SUPERMICRO 4029GP TRT2.
+NOTE: Using this script on other systems requires manual calibration of a function that converts the FANs RPM values into %-based values (function `SUPERMICRO_4029GP_TRT2_RPM_to_percent()` in `supermicro.py`). Current values are hardcoded for SUPERMICRO 4029GP TRT2.
 
 # Usage
 
