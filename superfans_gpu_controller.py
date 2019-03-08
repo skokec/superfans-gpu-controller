@@ -47,7 +47,7 @@ def superfans_gpu_controller(fan_settings, FAN_INCREASED_MIN_TIME=120, sleep_sec
     print('Using settings:')
     for k in sorted(fan_settings.keys()):
         print('\t%d C = %d ' % (k, fan_settings[k]) + "%")
-    print(time.ctime() + ':')
+    print('\n')
 
     try:
         FAN_MEMBERS = superfans.FAN_ZONES_MEMBERS[superfans.FAN_ZONE_SYS1] + \
@@ -114,7 +114,7 @@ def superfans_gpu_controller(fan_settings, FAN_INCREASED_MIN_TIME=120, sleep_sec
                     print('\tCurrent GPU measurements: %s' % ','.join(map(str,GPU_temp)))
                     print('\tMoving average GPU measurements: %s' % ','.join(map(str,mean_GPU_temp)))
                     print('\tTarget difference: SYS1 fan = %f; SYS2 fan = %f' % (max(diff_sys1_fan), max(diff_sys2_fan)))
-                    print(time.ctime() + ':')
+                    print('\n')
 
 
                 previous_target_fan = target_fan
