@@ -4,11 +4,12 @@ This controller enables automatic adjustments of FANs in SUPERMICRO servers base
 
 # Requirements
 
-* Linux based only (
+* Linux (tested on Ubuntu 16.04)
 * Python 2.7
-* nvidia drivers/tools (nvidia-smi)
-* IPMI tool (impitool) with loaded
+* nvidia drivers/tools (`nvidia-smi`)
+* IPMI tool (`impitool`) with loaded module (`modprobe ipmi_devintf`)
 
+Tested on SUPERMICRO 4029GP TRT2 with RTX 2080 Ti (nvidia 415.27 drivers).
 
 # Usage
 
