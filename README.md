@@ -21,8 +21,8 @@ sudo python superfans_gpu_controller.py
 Or install systemd service (`superfans-gpu-controller.service`):
 
 ```bash
-sudo chmod +x ./install_deamon.sh
-sudo ./install_deamon.sh
+sudo chmod +x ./install_daemon.sh
+sudo ./install_daemon.sh
 ```
 
 Service is registered for start at system startup. Start and stop it using:
