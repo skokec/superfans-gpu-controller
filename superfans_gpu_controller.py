@@ -116,9 +116,8 @@ def superfans_gpu_controller(fan_settings, FAN_INCREASED_MIN_TIME=120, sleep_sec
                     print('\tTarget difference: SYS1 fan = %f; SYS2 fan = %f' % (max(diff_sys1_fan), max(diff_sys2_fan)))
                     print('\n')
 
-
-                previous_target_fan = target_fan
-                previous_update_time = current_update_time
+                    previous_target_fan = target_fan
+                    previous_update_time = current_update_time
 
             time.sleep(sleep_sec)
     finally:
