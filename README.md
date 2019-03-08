@@ -44,7 +44,7 @@ sudo journalctl -f -u superfans-gpu-controller
 
 # Settings
 
-Currently the settings are hardcoded into superfans_gpu_controller.py using the following table:
+Currently the settings are hardcoded into `superfans_gpu_controller.py` using the following table:
  * 0°C => 25%
  * 60°C => 30%
  * 70°C => 36%
