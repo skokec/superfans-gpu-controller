@@ -55,6 +55,6 @@ Currently the settings are hardcoded into `superfans_gpu_controller.py` using th
 At full workload using 4x RTX 2080 Ti this results in around 75°C - 80°C at GPU.
 
 ## TODO:
- * split settings into seperate config file
- * enable linear increases between each setting point
- * enable online calibration of FANs (currenlty hardcoded for SUPERMICRO 4029GP TRT2!!)
+ * [ ] split settings into seperate config file
+ * [ ] enable linear increases between each setting point
+ * [ ] enable online calibration of FANs (currenlty hardcoded for SUPERMICRO 4029GP TRT2!!)
