@@ -27,7 +27,7 @@ def retrieve_nvidia_gpu_temperature():
     else:
         return False
 
-def superfans_gpu_controller(fan_settings, FAN_INCREASED_MIN_TIME=120, sleep_sec=2, gpu_moving_avg_num=5, fan_target_eps=1.0):
+def superfans_gpu_controller(fan_settings, FAN_INCREASED_MIN_TIME=120, sleep_sec=2, gpu_moving_avg_num=5, fan_target_eps=2.0):
     """
     Controller function that monitors GPU temperature in constant loop and adjusts FAN speeds based on provided `fan_settings`.
     After the loop the default preset is restored.
