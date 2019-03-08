@@ -42,7 +42,7 @@ sudo journalctl -f -u superfans-gpu-controller
 
 # Settings
 
-Currently the settings are hardcoded into superfans_gpu_controller.py (TODO: split into config file) using the following table:
+Currently the settings are hardcoded into superfans_gpu_controller.py using the following table:
  * 0°C => 25%
  * 60°C => 30%
  * 70°C => 36%
@@ -50,4 +50,9 @@ Currently the settings are hardcoded into superfans_gpu_controller.py (TODO: spl
  * 85°C => 45%
  * 90°C => 50%
  
-At full workload using 4x RTX 2080 Ti this results in around 75°C - 80°C (GPU temperature).
+At full workload using 4x RTX 2080 Ti this results in around 75°C - 80°C at GPU.
+
+## TODO:
+ * split settings into seperate config file
+ * enable linear increases between each setting point
+ * enable online calibration of FANs (currenlty hardcoded for SUPERMICRO 4029GP TRT2!!)
