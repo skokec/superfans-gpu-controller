@@ -4,7 +4,7 @@ This controller enables automatic adjustments of FANs in SUPERMICRO servers base
 
 # Requirements
 
-* Linux (tested on Ubuntu 16.04)
+* Linux (tested on Ubuntu 18.04)
 * Python 2.7
 * nvidia drivers/tools (`nvidia-smi`)
 * IPMI tool (`impitool`) with loaded module (`modprobe ipmi_devintf`)
@@ -13,7 +13,26 @@ Tested on SUPERMICRO 4029GP TRT2 with RTX 2080 Ti (nvidia 415.27 drivers).
 
 # Usage
 
+Directly call python script (requires sudo access for `impitool`):
 ```bash
-python superfans_gpu_controller.py
+sudo python superfans_gpu_controller.py
 ```
 
+Or install systemd service (`superfans-gpu-controller.service`):
+
+```bash
+sudo chmod +x ./install_deamon.sh
+sudo ./install_deamon.sh
+```
+
+Service is registered for start at system startup. Start and stop it using:
+```bash
+# start
+sudo systemctl start superfans-gpu-controller
+
+# stop
+sudo systemctl stop superfans-gpu-controller
+
+# check the status
+sudo systemctl status superfans-gpu-controller
+```
