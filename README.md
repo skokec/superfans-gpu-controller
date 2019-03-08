@@ -35,4 +35,7 @@ sudo systemctl stop superfans-gpu-controller
 
 # check the status
 sudo systemctl status superfans-gpu-controller
+
+# view logs (with trailing)
+sudo journalctl -f -u superfans-gpu-controller
 ```

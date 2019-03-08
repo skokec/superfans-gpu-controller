@@ -10,7 +10,8 @@ Type=simple
 User=root
 Group=root
 WorkingDirectory=`pwd`
-ExecStart=/usr/bin/python `pwd`/superfans_gpu_controller.py
+Environment=PYTHONUNBUFFERED=true
+ExecStart=/usr/bin/python -u `pwd`/superfans_gpu_controller.py
 StandardOutput=syslog
 StandardError=syslog
 
