@@ -10,7 +10,8 @@ This controller enables automatic adjustments of FANs in SUPERMICRO servers base
 * IPMI tool (`impitool`) with loaded module (`modprobe ipmi_devintf`)
 
 Tested on SUPERMICRO 4029GP TRT2 with RTX 2080 Ti (nvidia 415.27 drivers). 
-NOTE: Using on other systems requires manual calibration of conversion function for FAN RPM to %-based values. Current this is hardcoded for SUPERMICRO 4029GP TRT2.
+
+NOTE: Using on other systems requires manual calibration function that converts FANs RPM into %-based values (in SUPERMICRO_4029GP_TRT2_RPM_to_percent()` function in `supermicro.py`). Current this is hardcoded for SUPERMICRO 4029GP TRT2.
 
 # Usage
 
