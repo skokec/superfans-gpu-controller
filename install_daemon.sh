@@ -10,7 +10,7 @@ Type=simple
 User=root
 Group=root
 WorkingDirectory=`pwd`
-ExecStart=python `pwd`/superfans_gpu_controller.py
+ExecStart=/usr/bin/python `pwd`/superfans_gpu_controller.py
 StandardOutput=syslog
 StandardError=syslog
 
@@ -23,7 +23,7 @@ systemctl enable superfans-gpu-controller.service
 systemctl daemon-reload
 
 echo "Enabled start at system startup"
-systemctl enable myservice
+systemctl enable superfans-gpu-controller
 
 echo "Starting the service"
 systemctl start superfans-gpu-controller
