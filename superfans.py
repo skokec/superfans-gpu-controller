@@ -72,13 +72,13 @@ def set_fan_with_full_preset(config, speed, zone):
   # Make sure fans are on Full setting, or else this won't stick for long
   s = get_preset(config)
   if s is False:
-    print(time.ctime() +": Unable to get current fan status; exiting")
+    print("Unable to get current fan status; exiting")
     return False
 
   if s != FAN_PRESET_FULL:
-    print(time.ctime() +": The fan controller is currently not set to Full mode (required for manual fan settings, which will otherwise be adjusted by the BMC within minutes); setting it now.")
+    print("The fan controller is currently not set to Full mode (required for manual fan settings, which will otherwise be adjusted by the BMC within minutes); setting it now.")
     set_preset(config, preset='full')
-    print(time.ctime() +": Waiting 5 seconds to let fans spin up...")
+    print("Waiting 5 seconds to let fans spin up...")
     time.sleep(5)
 
   ok = True
@@ -88,10 +88,10 @@ def set_fan_with_full_preset(config, speed, zone):
     ok = ipmi_raw_cmd('0x30 0x70 0x66 0x01 0x01 0x%02x' % speed, **config)
 
   if ok:
-    print(time.ctime() +": Set %s fans on %s to %d%%." % (zone, config['hostname'], speed))
+    print("Set %s fans on %s to %d%%." % (zone, config['hostname'], speed))
     return True
   else:
-    print(time.ctime() +": Unable to update fans.")
+    print("Unable to update fans.")
     return False
 
 def set_fan(config, speed, zone):
@@ -103,10 +103,10 @@ def set_fan(config, speed, zone):
   ok = ipmi_raw_cmd('0x30 0x70 0x66 0x01 0x%02x 0x%02x' % (zone, speed), **config)
 
   if ok:
-    print(time.ctime() +": Set %s fans on %s to %d%%." % (FAN_ZONES_STR[zone], config['hostname'], speed))
+    print("Set %s fans on %s to %d%%." % (FAN_ZONES_STR[zone], config['hostname'], speed))
     return True
   else:
-    print(time.ctime() +": Unable to update fans.")
+    print("Unable to update fans.")
     return False
 
 def get_fan(config, fan):
@@ -148,9 +148,9 @@ def _set_preset(config):
   if fan_speed2 is False:
     return False
 
-  print(time.ctime() +": Preset: %s" % s)
-  print(time.ctime() +": Current fan speed (CPU Zone): %d%%" % int(fan_speed, 16))
-  print(time.ctime() +": Current fan speed (Peripheral zone): %d%%" % int(fan_speed2, 16))
+  print("Preset: %s" % s)
+  print("Current fan speed (CPU Zone): %d%%" % int(fan_speed, 16))
+  print("Current fan speed (Peripheral zone): %d%%" % int(fan_speed2, 16))
   return True
 
 
@@ -159,7 +159,7 @@ def set_preset(config, preset):
     return False
 
   if ipmi_raw_cmd("0x30 0x45 0x01 0x0%d" % preset, **config):
-    print(time.ctime() +": Updated preset on %s." % config['hostname'])
+    print("Updated preset on %s." % config['hostname'])
     return True
 
   return False
@@ -168,7 +168,7 @@ def ipmi_raw_cmd(raw_cmd, hostname = 'localhost', username=None, password=None, 
 
   if hostname == 'localhost':
     if os.geteuid() != 0:
-      print(time.ctime() +": In order to communicate with the kernel's IPMI module, you must be root.")
+      print("In order to communicate with the kernel's IPMI module, you must be root.")
       sys.exit(1)
     cmd = 'ipmitool raw %s' % raw_cmd
   else:
@@ -181,9 +181,9 @@ def ipmi_raw_cmd(raw_cmd, hostname = 'localhost', username=None, password=None, 
   try:
     s = subprocess.check_output(cmd + " 2>&1", shell=True)
   except subprocess.CalledProcessError, ex:
-    print(time.ctime() +": Error: Problem running ipmitool")
-    print(time.ctime() +": Command: %s" % cmd)
-    print(time.ctime() +": Return code: %d" % ex)
+    print("Error: Problem running ipmitool")
+    print("Command: %s" % cmd)
+    print("Return code: %d" % ex)
     return False
 
   out = s.strip()
@@ -197,7 +197,7 @@ def ipmi_fan_status(hostname = 'localhost', username=None, password=None, use_en
 
   if hostname == 'localhost':
     if os.geteuid() != 0:
-      print(time.ctime() +": In order to communicate with the kernel's IPMI module, you must be root.")
+      print("In order to communicate with the kernel's IPMI module, you must be root.")
       sys.exit(1)
     cmd = 'ipmitool sensor | grep FAN '
   else:
@@ -209,9 +209,9 @@ def ipmi_fan_status(hostname = 'localhost', username=None, password=None, use_en
   try:
     s = subprocess.check_output(cmd + " 2>&1", shell=True)
   except subprocess.CalledProcessError, ex:
-    print(time.ctime() +": Error: Problem running ipmitool")
-    print(time.ctime() +": Command: %s" % cmd)
-    print(time.ctime() +": Return code: %d" % ex)
+    print("Error: Problem running ipmitool")
+    print("Command: %s" % cmd)
+    print("Return code: %d" % ex)
     return False
 
   fan_status_return = {}

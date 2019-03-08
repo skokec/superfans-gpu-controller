@@ -3,7 +3,16 @@
 # author: Domen Tabernik
 # 2019
 
-import time, superfans, subprocess
+import time, superfans, subprocess, signal, sys
+
+class GracefulKiller:
+  kill_now = False
+  def __init__(self):
+    signal.signal(signal.SIGINT, self.exit_gracefully)
+    signal.signal(signal.SIGTERM, self.exit_gracefully)
+
+  def exit_gracefully(self,signum, frame):
+    self.kill_now = True
 
 def retrieve_nvidia_gpu_temperature():
     cmd = 'nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader'
@@ -34,13 +43,13 @@ def superfans_gpu_controller(fan_settings, FAN_INCREASED_MIN_TIME=120, sleep_sec
 
     # save default present before changing anything
     default_preset = superfans.get_preset(superfan_config)
-    print(time.ctime() + ': Started fan control using GPU temperature.')
-    print(time.ctime() + ': Using settings:')
+    print('Started fan control using GPU temperature.')
+    print('Using settings:')
     for k in sorted(fan_settings.keys()):
-        print(time.ctime() + ': \t%d C = %d ' % (k, fan_settings[k]) + "%")
+        print('\t%d C = %d ' % (k, fan_settings[k]) + "%")
     print(time.ctime() + ':')
-    try:
 
+    try:
         FAN_MEMBERS = superfans.FAN_ZONES_MEMBERS[superfans.FAN_ZONE_SYS1] + \
                       superfans.FAN_ZONES_MEMBERS[superfans.FAN_ZONE_SYS2]
 
@@ -50,7 +59,9 @@ def superfans_gpu_controller(fan_settings, FAN_INCREASED_MIN_TIME=120, sleep_sec
 
         prev_GPU_temp = []
 
-        while True:
+        # ensure correct ending when SIGINT and SIGTERM are received
+        k = GracefulKiller()
+        while not k.kill_now:
 
             # get GPU temperature
             GPU_temp = retrieve_nvidia_gpu_temperature()
@@ -100,9 +111,9 @@ def superfans_gpu_controller(fan_settings, FAN_INCREASED_MIN_TIME=120, sleep_sec
                     superfans.set_fan(superfan_config, target_fan, superfans.FAN_ZONE_SYS2)
 
                 if update_sys1_fan or update_sys2_fan:
-                    print(time.ctime() + ': \tCurrent GPU measurements: %s' % ','.join(map(str,GPU_temp)))
-                    print(time.ctime() + ': \tMoving average GPU measurements: %s' % ','.join(map(str,mean_GPU_temp)))
-                    print(time.ctime() + ': \tTarget difference: SYS1 fan = %f; SYS2 fan = %f' % (max(diff_sys1_fan), max(diff_sys2_fan)))
+                    print('\tCurrent GPU measurements: %s' % ','.join(map(str,GPU_temp)))
+                    print('\tMoving average GPU measurements: %s' % ','.join(map(str,mean_GPU_temp)))
+                    print('\tTarget difference: SYS1 fan = %f; SYS2 fan = %f' % (max(diff_sys1_fan), max(diff_sys2_fan)))
                     print(time.ctime() + ':')
 
 
@@ -113,10 +124,7 @@ def superfans_gpu_controller(fan_settings, FAN_INCREASED_MIN_TIME=120, sleep_sec
     finally:
         # revert back to default preset before finishing
         superfans.set_preset(superfan_config, default_preset)
-        print(time.ctime() + ': Reverted back to system default.')
-
-
-
+        print('Reverted back to system default.')
 
 if __name__  == "__main__":
     # fan settings = {[in deg C]: [% fan], ...}
