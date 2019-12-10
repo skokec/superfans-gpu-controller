@@ -4,7 +4,7 @@ This controller enables automatic adjustments of FANs in SUPERMICRO servers base
 
 # Requirements
 
-* Linux (tested on Ubuntu 18.04)
+* Linux (tested on Ubuntu 16.04.5)
 * Python 2.7
 * nvidia drivers/tools (`nvidia-smi`)
 * IPMI tool (`impitool`) with loaded module (`modprobe ipmi_devintf`)
@@ -45,12 +45,12 @@ sudo journalctl -f -u superfans-gpu-controller
 # Settings
 
 Currently the settings are hardcoded into `superfans_gpu_controller.py` using the following table:
- * 0°C => 25%
- * 60°C => 30%
- * 70°C => 36%
- * 80°C => 40%
- * 85°C => 45%
- * 90°C => 50%
+ * 0°C => 20%
+ * 60°C => 25%
+ * 70°C => 30%
+ * 80°C => 35%
+ * 87°C => 40%
+ * 90°C => 43%
  
 At full workload using 4x RTX 2080 Ti this results in around 75°C - 80°C at GPU.
 
@@ -58,3 +58,4 @@ At full workload using 4x RTX 2080 Ti this results in around 75°C - 80°C at GP
  * [ ] split settings into seperate config file
  * [ ] enable linear increases between each setting point
  * [ ] enable online calibration of FANs (currenlty hardcoded for SUPERMICRO 4029GP TRT2!!)
+ * [ ] enable robust detection of faulty FANs as outliers (using RANSAC-like algorithm)
