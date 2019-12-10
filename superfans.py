@@ -61,7 +61,7 @@ FAN_ZONES_MEMBERS= {
 # SYS1 and SYS2 fans use the following linear equations to
 # convert from RPM to % value
 def SUPERMICRO_4029GP_TRT2_RPM_to_percent(rpm):
-  return rpm * 0.0098 - 11.5479
+  return max(rpm * 0.0098 - 11.5479,0)
 
 def set_fan_with_full_preset(config, speed, zone):
   """
@@ -219,8 +219,11 @@ def ipmi_fan_status(hostname = 'localhost', username=None, password=None, use_en
     if len(fan_str.strip()) > 0:
       fan_stat = fan_str.split("|")
       fan_name = fan_stat[0].strip()
-      fan_rpm = float(fan_stat[1].strip())
-      fan_status_return[fan_name] = fan_rpm
+      try:
+        fan_rpm = float(fan_stat[1].strip())
+        fan_status_return[fan_name] = fan_rpm
+      except ValueError:
+        pass
   return fan_status_return
 
 def get_preset(config):
