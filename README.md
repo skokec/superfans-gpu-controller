@@ -42,6 +42,12 @@ sudo systemctl status superfans-gpu-controller
 sudo journalctl -f -u superfans-gpu-controller
 ```
 
+## Print RPMs of all FANs grouped by zones:
+
+```bash
+sudo python superfans.py
+```
+
 # Settings
 
 Currently the settings are hardcoded into `superfans_gpu_controller.py` using the following table:
