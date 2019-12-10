@@ -51,8 +51,8 @@ FAN9 ='FAN9'
 FAN10 ='FAN10'
 
 FAN_ZONES_MEMBERS= {
-  FAN_ZONE_CPU1:FAN10,
-  FAN_ZONE_CPU2:FAN9,
+  FAN_ZONE_CPU1:[FAN10],
+  FAN_ZONE_CPU2:[FAN9],
   FAN_ZONE_SYS2:[FAN1,FAN2,FAN3,FAN4],
   FAN_ZONE_SYS1:[FAN5,FAN6,FAN7,FAN8],
 }
@@ -109,21 +109,25 @@ def set_fan(config, speed, zone):
     print("Unable to update fans.")
     return False
 
-def get_fan(config, fan):
+def get_fan(config, fan, in_rpm=False):
   """
   Get fan speed in % (for one or more fans).
   """
-
+  if in_rpm:
+    convert_fn = lambda x: x
+  else:
+    convert_fn = SUPERMICRO_4029GP_TRT2_RPM_to_percent
+  
   fan_status_list = ipmi_fan_status(**config)
 
   if type(fan) == list:
     return_list = {}
     for f in fan:
       if fan_status_list.has_key(f):
-        return_list[f] = SUPERMICRO_4029GP_TRT2_RPM_to_percent(fan_status_list[f])
+        return_list[f] = convert_fn(fan_status_list[f])
     return return_list
   elif fan_status_list.has_key(fan):
-    return SUPERMICRO_4029GP_TRT2_RPM_to_percent(fan_status_list[fan])
+    return convert_fn(fan_status_list[fan])
   else:
     return False
 
@@ -234,3 +238,11 @@ def get_preset(config):
     return int(s)
   except:
     return False
+
+if __name__ == "__main__":
+  
+  superfan_config = dict(hostname= 'localhost')
+  for zone_key in FAN_ZONES_MEMBERS.keys():
+    current_fan_levels = get_fan(superfan_config, FAN_ZONES_MEMBERS[zone_key], in_rpm=True)
+    print('FAN zone %s: %s' % (FAN_ZONES_STR[zone_key],",".join([str(p) for p in current_fan_levels.values()])))
+
