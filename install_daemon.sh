@@ -3,7 +3,7 @@
 echo "Created '/etc/systemd/system/superfans-gpu-controller.service' service file"
 echo "[Unit]
 Description=GPU-based controller of SUPERMICRO server FANs
-After=syslog.target
+After=syslog.target nvidia-persistenced.service
 
 [Service]
 Type=simple
