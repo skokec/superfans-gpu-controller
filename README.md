@@ -16,6 +16,7 @@ NOTE: Using this script on other systems requires manual calibration of a functi
 # Install
 
 ```bash
+sudo apt-get install ipmitool && modprobe ipmi_devintf
 make
 sudo make install
 ```
@@ -46,8 +47,7 @@ Directly call python script (requires sudo access for `impitool`):
 sudo python superfans_gpu_controller.py config.json
 ```
 
-## Print RPMs of all FANs grouped by zones:
-
+Print RPMs of all FANs grouped by zones:
 ```bash
 sudo python superfans.py
 ```
