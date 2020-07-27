@@ -19,6 +19,7 @@ install: $(service_dir) $(conf_dir) superfans-gpu-controller.service
 	cp etc/systemd/system/superfans-gpu-controller.service $(service_dir)
 	-systemctl enable superfans-gpu-controller.service
 	-systemctl enable superfans-gpu-controller
+	-systemctl start superfans-gpu-controller
 
 uninstall:
 	-systemctl stop superfans-gpu-controller
