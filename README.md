@@ -17,7 +17,6 @@ NOTE: Using this script on other systems requires manual calibration of a functi
 
 ```bash
 sudo apt-get install ipmitool && modprobe ipmi_devintf
-make
 sudo make install
 ```
 
