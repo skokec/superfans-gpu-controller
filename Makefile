@@ -14,7 +14,7 @@ superfans-gpu-controller.service: $(src_python_dir)/superfans_gpu_controller.py
 # awk is needed to replace the absolute path of mydaemon executable in the .service file
 	awk -v exec_path='$(shell which superfans-gpu-controller) $(conf_dir)/superfans-gpu-controller.json' $(awk_script) etc/systemd/system/superfans-gpu-controller.service.template > etc/systemd/system/superfans-gpu-controller.service
 
-install: $(service_dir) $(conf_dir) superfans-gpu-controller.service
+install: $(service_dir) $(conf_dir) superfans-gpu-controller.service superfans-gpu-controller
 	cp etc/superfans-gpu-controller.json $(conf_dir)
 	cp etc/systemd/system/superfans-gpu-controller.service $(service_dir)
 	-systemctl enable superfans-gpu-controller.service
