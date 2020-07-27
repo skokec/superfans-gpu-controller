@@ -3,7 +3,7 @@
 # author: Domen Tabernik
 # 2019
 
-import time, superfans, subprocess, signal, sys
+import time, superfans, subprocess, signal, sys, json
 
 class GracefulKiller:
   kill_now = False
@@ -24,6 +24,7 @@ def retrieve_nvidia_gpu_temperature():
     s = subprocess.check_output(cmd + " 2>&1", shell=True)
     if len(s) <= 0:
         return False
+    s = s.decode('ascii')
 
     out = [int(x.strip()) for x in s.split("\n") if len(x.strip()) > 0]
     if out:
@@ -44,6 +45,9 @@ def superfans_gpu_controller(fan_settings, FAN_INCREASED_MIN_TIME=120, sleep_sec
     :return:
     """
     superfan_config = dict(hostname= 'localhost')
+
+    # convert fan_settings keys from string to int
+    fan_settings = { int(k): fan_settings[k] for k in sorted(fan_settings.keys()) }
 
     # save default present before changing anything
     default_preset = superfans.get_preset(superfan_config)
@@ -113,16 +117,16 @@ def superfans_gpu_controller(fan_settings, FAN_INCREASED_MIN_TIME=120, sleep_sec
                 # Allow for 1% difference in target
                 update_sys1_fan = any([d > fan_target_eps for d in diff_sys1_fan])
                 update_sys2_fan = any([d > fan_target_eps for d in diff_sys2_fan])
-                if update_sys1_fan:
-                    superfans.set_fan(superfan_config, target_fan, superfans.FAN_ZONE_SYS1)
+                #if update_sys1_fan:
+                #    superfans.set_fan(superfan_config, target_fan, superfans.FAN_ZONE_SYS1)
 
-                if update_sys2_fan:
-                    superfans.set_fan(superfan_config, target_fan, superfans.FAN_ZONE_SYS2)
+                #if update_sys2_fan:
+                #    superfans.set_fan(superfan_config, target_fan, superfans.FAN_ZONE_SYS2)
 
                 if update_sys1_fan or update_sys2_fan:
                     print('\tCurrent GPU measurements (in C): %s' % ','.join(map(str,GPU_temp)))
                     print('\tMoving average GPU measurements (in C): %s  (max=%d)' % (','.join(map(str,mean_GPU_temp)),max_gpu_temp))
-		    print('\tTarget FAN speed: %d C => FAN %d %% (difference:  SYS1 fan = %.2f; SYS2 fan = %.2f)' % (max_gpu_temp, target_fan, max(diff_sys1_fan), max(diff_sys2_fan)))
+                    print('\tTarget FAN speed: %d C => FAN %d %% (difference:  SYS1 fan = %.2f; SYS2 fan = %.2f)' % (max_gpu_temp, target_fan, max(diff_sys1_fan), max(diff_sys2_fan)))
                     print('\n\n')
 
                     previous_target_fan = target_fan
@@ -134,13 +138,20 @@ def superfans_gpu_controller(fan_settings, FAN_INCREASED_MIN_TIME=120, sleep_sec
         superfans.set_preset(superfan_config, default_preset)
         print('Reverted back to system default.')
 
-if __name__  == "__main__":
-    # fan settings = {[in deg C]: [% fan], ...}
-    fan_settings = {0: 20,
-                    60: 25,
-                    70: 30,
-                    80: 35,
-                    87: 40,
-                    90: 43}
+def main():
+    if len(sys.argv) != 2:
+        print('Invalid number of arguments: missing configuration file!!')
+        print('')
+        print(' Usage: %s [PATH_TO_JSON_CONFIG]' % sys.argv[0])
+        print('')
+        print(' Configuration file in JSON format should include "fan_settings" = {[in deg C]: [% fan], ...} ')
+        print
+        exit(0)
 
-    superfans_gpu_controller(fan_settings)
+    with open(sys.argv[1]) as cfg_file:
+        cfg = json.load(cfg_file)
+
+    superfans_gpu_controller(cfg['fan_settings'])
+
+if __name__  == "__main__":
+    main()

@@ -184,10 +184,10 @@ def ipmi_raw_cmd(raw_cmd, hostname = 'localhost', username=None, password=None, 
 
   try:
     s = subprocess.check_output(cmd + " 2>&1", shell=True)
-  except subprocess.CalledProcessError, ex:
+  except subprocess.CalledProcessError as ex:
     print("Error: Problem running ipmitool")
     print("Command: %s" % cmd)
-    print("Return code: %d" % ex)
+    print("Return code: %s" % ex)
     return False
 
   out = s.strip()
@@ -212,10 +212,10 @@ def ipmi_fan_status(hostname = 'localhost', username=None, password=None, use_en
     cmd = 'ipmitool -I lanplus -U %s %s -H %s sensor | grep FAN' % (shlex.quote(username), cmd_pass, hostname)
   try:
     s = subprocess.check_output(cmd + " 2>&1", shell=True)
-  except subprocess.CalledProcessError, ex:
+  except subprocess.CalledProcessError as ex:
     print("Error: Problem running ipmitool")
     print("Command: %s" % cmd)
-    print("Return code: %d" % ex)
+    print("Return code: %s" % ex)
     return False
 
   fan_status_return = {}
