@@ -189,7 +189,10 @@ def ipmi_raw_cmd(raw_cmd, hostname = 'localhost', username=None, password=None, 
     print("Command: %s" % cmd)
     print("Return code: %s" % ex)
     return False
-
+  
+  # convert from byte to string format
+  s = s.decode('ascii')
+  
   out = s.strip()
   if out:
     return out
@@ -217,7 +220,9 @@ def ipmi_fan_status(hostname = 'localhost', username=None, password=None, use_en
     print("Command: %s" % cmd)
     print("Return code: %s" % ex)
     return False
-
+  # convert from byte to string format
+  s = s.decode('ascii')
+  
   fan_status_return = {}
   for fan_str in s.split("\n"):
     if len(fan_str.strip()) > 0:
