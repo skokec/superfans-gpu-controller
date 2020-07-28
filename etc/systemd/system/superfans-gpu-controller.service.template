@@ -2,7 +2,7 @@
 Description=GPU-based controller of SUPERMICRO server FANs
 After=syslog.target nvidia-persistenced.service
 
-StartLimitIntervalSec=500
+StartLimitIntervalSec=30
 StartLimitBurst=5
 
 [Service]
