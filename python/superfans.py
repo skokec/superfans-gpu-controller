@@ -123,10 +123,10 @@ def get_fan(config, fan, in_rpm=False):
   if type(fan) == list:
     return_list = {}
     for f in fan:
-      if fan_status_list.has_key(f):
+      if f in fan_status_list:
         return_list[f] = convert_fn(fan_status_list[f])
     return return_list
-  elif fan_status_list.has_key(fan):
+  elif fan in fan_status_list:
     return convert_fn(fan_status_list[fan])
   else:
     return False
