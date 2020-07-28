@@ -117,11 +117,11 @@ def superfans_gpu_controller(fan_settings, FAN_INCREASED_MIN_TIME=120, sleep_sec
                 # Allow for 1% difference in target
                 update_sys1_fan = any([d > fan_target_eps for d in diff_sys1_fan])
                 update_sys2_fan = any([d > fan_target_eps for d in diff_sys2_fan])
-                #if update_sys1_fan:
-                #    superfans.set_fan(superfan_config, target_fan, superfans.FAN_ZONE_SYS1)
+                if update_sys1_fan:
+                    superfans.set_fan(superfan_config, target_fan, superfans.FAN_ZONE_SYS1)
 
-                #if update_sys2_fan:
-                #    superfans.set_fan(superfan_config, target_fan, superfans.FAN_ZONE_SYS2)
+                if update_sys2_fan:
+                    superfans.set_fan(superfan_config, target_fan, superfans.FAN_ZONE_SYS2)
 
                 if update_sys1_fan or update_sys2_fan:
                     print('\tCurrent GPU measurements (in C): %s' % ','.join(map(str,GPU_temp)))
