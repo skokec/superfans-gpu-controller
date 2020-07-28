@@ -2,14 +2,23 @@
 Description=GPU-based controller of SUPERMICRO server FANs
 After=syslog.target nvidia-persistenced.service
 
+StartLimitIntervalSec=500
+StartLimitBurst=5
+
 [Service]
 Type=simple
+
 User=root
 Group=root
+
 Environment="PYTHONUNBUFFERED=true"
 ExecStart=/placeholder/path/to/superfans-gpu-controller "/etc/superfans-gpu-controller.json"
+
 StandardOutput=syslog
 StandardError=syslog
+
+Restart=on-failure
+RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target
