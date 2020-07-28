@@ -26,7 +26,7 @@ uninstall:
 	-systemctl disable superfans-gpu-controller
 	-rm -r $(service_dir)/superfans-gpu-controller.service
 	-rm -r $(conf_dir)/superfans-gpu-controller.json
-        -systemctl daemon-reload
+	-systemctl daemon-reload
 	-systemctl reset-failed
 	pip3 uninstall -y superfans-gpu-controller
 	
