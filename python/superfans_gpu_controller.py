@@ -101,8 +101,8 @@ def superfans_gpu_controller(fan_settings, FAN_INCREASED_MIN_TIME=120, sleep_sec
 
             current_fan_levels = superfans.get_fan(superfan_config, FAN_MEMBERS)
             current_update_time = time.time()
-            diff_sys1_fan = [abs(current_fan_levels[FAN] - target_fan) for FAN in superfans.FAN_ZONES_MEMBERS[superfans.FAN_ZONE_SYS1] if current_fan_levels.has_key(FAN) and current_fan_levels[FAN] > 0]
-            diff_sys2_fan = [abs(current_fan_levels[FAN] - target_fan) for FAN in superfans.FAN_ZONES_MEMBERS[superfans.FAN_ZONE_SYS2] if current_fan_levels.has_key(FAN) and current_fan_levels[FAN] > 0]
+            diff_sys1_fan = [abs(current_fan_levels[FAN] - target_fan) for FAN in superfans.FAN_ZONES_MEMBERS[superfans.FAN_ZONE_SYS1] if FAN in current_fan_levels and current_fan_levels[FAN] > 0]
+            diff_sys2_fan = [abs(current_fan_levels[FAN] - target_fan) for FAN in superfans.FAN_ZONES_MEMBERS[superfans.FAN_ZONE_SYS2] if FAN in current_fan_levels and current_fan_levels[FAN] > 0]
 
 	    # TODO: ignore outlier FANs in case they are faulty
 
