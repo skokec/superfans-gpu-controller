@@ -10,11 +10,11 @@ src_python_dir=python
 superfans-gpu-controller: $(src_python_dir)/superfans_gpu_controller.py $(src_python_dir)/setup.py
 	pip3 install $(src_python_dir)/.
 
-superfans-gpu-controller.service: $(src_python_dir)/superfans_gpu_controller.py
+superfans-gpu-controller.service: $(src_python_dir)/superfans_gpu_controller.py superfans-gpu-controller
 # awk is needed to replace the absolute path of mydaemon executable in the .service file
 	awk -v exec_path='$(shell which superfans-gpu-controller) $(conf_dir)/superfans-gpu-controller.json' $(awk_script) etc/systemd/system/superfans-gpu-controller.service.template > etc/systemd/system/superfans-gpu-controller.service
 
-install: $(service_dir) $(conf_dir) superfans-gpu-controller.service superfans-gpu-controller
+install: $(service_dir) $(conf_dir) superfans-gpu-controller.service
 	cp etc/superfans-gpu-controller.json $(conf_dir)
 	cp etc/systemd/system/superfans-gpu-controller.service $(service_dir)
 	-systemctl enable superfans-gpu-controller.service
@@ -23,8 +23,12 @@ install: $(service_dir) $(conf_dir) superfans-gpu-controller.service superfans-g
 
 uninstall:
 	-systemctl stop superfans-gpu-controller
+	-systemctl disable superfans-gpu-controller
 	-rm -r $(service_dir)/superfans-gpu-controller.service
 	-rm -r $(conf_dir)/superfans-gpu-controller.json
-
+        -systemctl daemon-reload
+	-systemctl reset-failed
+	pip3 uninstall -y superfans-gpu-controller
+	
 clean:
 	-rm etc/systemd/system/superfans-gpu-controller.service
